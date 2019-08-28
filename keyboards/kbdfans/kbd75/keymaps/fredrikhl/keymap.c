@@ -1,7 +1,10 @@
 #include QMK_KEYBOARD_H
 
 enum custom_keycodes {
-  VIM_L,
+  VIM_L = SAFE_RANGE,
+  COMP_AA,
+  COMP_AE,
+  COMP_OE,
 };
 
 
@@ -12,7 +15,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_DEL,   KC_END,   KC_PGDN,
     KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PSCR,
     VIM_L,    KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,                      KC_ENT,   KC_SLCK,
-    KC_LSFT,  KC_APP,   KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_APP,             KC_UP,    KC_PAUS,
+    KC_LSFT,  MO(2),    KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_APP,             KC_UP,    KC_PAUS,
     KC_LCTL,  KC_LGUI,  KC_LALT,                      KC_SPC,   MO(1),    KC_BSPC,                      KC_RALT,  KC_CAPS,  KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT
   ),
 
@@ -24,6 +27,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,  _______,            KC_MPLY,  _______,
     _______,  _______,  _______,                      _______,  _______,  _______,                      _______,  _______,  _______,  KC_MPRV,  KC_MSTP,  KC_MNXT
   ),
+
+  [2] = LAYOUT(
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  COMP_AA,  _______,  _______,            _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  COMP_OE,  COMP_AE,                      _______,  _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,  _______,
+    _______,  _______,  _______,                      _______,  _______,  _______,                      _______,  _______,  _______,  _______,  _______,  _______
+  ),
+
+/*
+  // empty layout
+  [] = LAYOUT(
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                      _______,  _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,  _______,
+    _______,  _______,  _______,                      _______,  _______,  _______,                      _______,  _______,  _______,  _______,  _______,  _______
+  ),
+*/
 };
 
 
@@ -31,10 +55,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case VIM_L:
       if (record->event.pressed) {
-        // when keycode QMKBEST is pressed
         SEND_STRING("|");
-      } else {
-        // VIM_L event.released
+      }
+      break;
+    case COMP_AA:
+      if (record->event.pressed) {
+        SEND_STRING(SS_TAP(X_APPLICATION)"aa");
+      }
+      break;
+    case COMP_AE:
+      if (record->event.pressed) {
+        SEND_STRING(SS_TAP(X_APPLICATION)"ae");
+      }
+      break;
+    case COMP_OE:
+      if (record->event.pressed) {
+          if (get_mods() & MOD_LSFT) {
+            SEND_STRING(SS_UP(X_LSHIFT)SS_TAP(X_APPLICATION)"O/"SS_DOWN(X_LSHIFT));
+          } else {
+            SEND_STRING(SS_TAP(X_APPLICATION)"o/");
+          }
       }
       break;
   }
