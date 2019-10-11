@@ -13,7 +13,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "config_common.h"
 
 #pragma once
 
 // place overrides here
+//
+
+#define BOOTMAGIC_KEY_SKIP KC_S
+#define BOOTMAGIC_KEY_EEPROM_CLEAR KC_C
