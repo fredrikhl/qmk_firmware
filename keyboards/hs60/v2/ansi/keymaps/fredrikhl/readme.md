@@ -10,6 +10,7 @@ The base layer is a fairly sane and normal 60% ansi layout, but:
 - Escape on CAPS
 - Layer1 mode on RGUI
 - Layer2 mode on APP
+- Layer3 mode on RGUI + APP
 
 
 Layer 1
@@ -23,8 +24,14 @@ Function Layer
 - Arrows on HJKL cluster
 - mute on `m`, volume down on `,`, volume up on `.` 
 
-
 Layer 2
+-------
+Function Layer
+
+- PGUP/PGDN/HOME/END on WASD cluster
+
+
+Layer 3
 -------
 QMK/Board layer
 
